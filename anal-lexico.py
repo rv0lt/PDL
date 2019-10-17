@@ -1,5 +1,5 @@
 import ply.lex as lex
-
+import sys
 palabras_clave = {
     #Definir las palabras clave
     'var': 'VAR',
@@ -26,17 +26,17 @@ tokens = (
     'PUNTOCOMA', # ;
     'PARAB', # ( 
     'PARCER', # )
-    'CORCHETEAB' # [
+    'CORCHETEAB', # [
     'CORCHETECER' # ]    
 )
 # Reglas de expresiones regulares para tokens simples
-t_OPESPECIAL = r'\|\='
+t_OPESPECIAL = r'\|='
 t_OPARITMETICO = r'\+'
-t_OPRELACIONAL = r'\>'
-t_OPLOGICO = r'\!'
-t_ASIGNACION = r'\='
-t_COMA = r'\,'
-t_PUNTOCOMA = r'\;'
+t_OPRELACIONAL = r'>'
+t_OPLOGICO = r'!'
+t_ASIGNACION = r'='
+t_COMA = r','
+t_PUNTOCOMA = r';'
 t_PARAB = r'\('
 t_PARCER = r'\)'
 t_CORCHETEAB = r'\{'
@@ -55,12 +55,31 @@ def t_NUMBER(t):
 #no se me ocurre como implementarlo
 
 def t_comments(t):
-    r'\*'
+    r'/\*(.|\n)*?\*/'
+    t.lexer.lineno += t.value.count('\n')
 def t_newline(t):
-    r'\n+'  
+    r'\n'
+    t.lexer.lineno+=1  
 def t_error(t):
-    t.skip(1)
+    print("Illegal character %s" % t.value[0])
+    t.lexer.skip(1)
 t_ignore = ' \t' #Contiene espacios y tabuladores
-
 if __name__ == '__main__':
-     lex.runmain()
+    if len(sys.argv) != 2:
+        print ("ERROR: no se ha especificado archivo ")
+        sys.exit(1)
+    lexer=lex.lex()
+    data = open(sys.argv[1], 'r')
+    linea = data.readline()
+    while linea != "":
+        lexer.input(linea)
+        linea = data.readline()
+        while True:
+            tok = lexer.token()
+            if not tok: break
+            print tok
+    #lex.input("a+b")
+    #for tok in iter(lex.token, None):
+    #    print repr(tok.type), repr(tok.value)
+
+     #lex.runmain(lexer)
