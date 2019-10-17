@@ -1,53 +1,93 @@
 import ply.lex as lex
 import sys
-palabras_clave = {
+posTs=1
+palabras_clave = (
     #Definir las palabras clave
-    'var': 'VAR',
-    'int':'INT',
-    'for':'FOR',
-    'boolean':'BOOLEAN',
-    'string' : 'STRING',
-    'print' : 'PRINT',
-    'return' : 'RETURN',
-    'function': 'FUNCTION',
-    'if' : 'IF',
-    'input': 'INPUT'
-}
-tokens = (
-    'ID',
-    'ENTERO',
-    'ASIGNACION', # =
-    'COMA',
-    #'CADENA', #"hola"
-    'OPARITMETICO', #+
-    'OPRELACIONAL', # >
-    'OPLOGICO', # !
-    'OPESPECIAL', # b1|=b2 -> b1 = b1 || b2
-    'PUNTOCOMA', # ;
-    'PARAB', # ( 
-    'PARCER', # )
-    'CORCHETEAB', # [
-    'CORCHETECER' # ]    
+    'var',
+    'int',
+    'for',
+    'boolean',
+    'string',
+    'print',
+    'return',
+    'function',
+    'if',
+    'input'
 )
-# Reglas de expresiones regulares para tokens simples
-t_OPESPECIAL = r'\|='
-t_OPARITMETICO = r'\+'
-t_OPRELACIONAL = r'>'
-t_OPLOGICO = r'!'
-t_ASIGNACION = r'='
-t_COMA = r','
-t_PUNTOCOMA = r';'
-t_PARAB = r'\('
-t_PARCER = r'\)'
-t_CORCHETEAB = r'\{'
-t_CORCHETECER = r'\}'
-
-#Reglas de expresiones regulares ms complejas
-def t_ID(t):
-    r'[a-zA-z_][a-zA-Z_0-9]*'
-    t.type = palabras_clave.get(t.value,'ID')
+tokens = palabras_clave + (
+    'id',
+    'entero',
+    'asignacion', # =
+    'coma', # ,
+    #'CADENA', #"hola"
+    'opArt', #+
+    'opRel', # >
+    'opLog', # !
+    'opEsp', # b1|=b2 -> b1 = b1 || b2
+    'puntoComa', # ;
+    'parAb', # ( 
+    'parCerr', # )
+    'corchAb', # [
+    'corchCerr' # ]    
+)
+# Reglas de expresiones regulares para los tokens
+def t_opEsp(t):
+    r'\|='
+    t.value="-"
     return t
-def t_NUMBER(t):
+def t_opRel(t):
+    r'>'
+    t.value=1
+    return t
+def t_opLog(t):
+    r'!'
+    t.value=1
+    return t
+def t_asignacion(t):
+    r'='
+    t.value="-"
+    return t
+def t_coma(t):
+    r','
+    t.value="-"
+    return t
+def t_puntoComa(t):
+    r';'
+    t.value="-"
+    return t
+def t_parAb(t):
+    r'\('
+    t.value="-"
+    return t
+def t_parCerr(t):
+    r'\)'
+    t.value="-"
+    return t
+def t_corchAb(t):
+    r'\{'
+    t.value="-"
+    return t
+def t_corchCerr(t):
+    r'\}'
+    t.value="-"
+    return t
+def t_opArt(t):
+    r'\+'
+    t.value = 1
+    return t        
+ 
+def t_id(t):
+    r'[a-zA-z_][a-zA-Z_0-9]*'
+    global posTs
+    if t.value in palabras_clave:
+        t.type = t.value
+        t.value = "-"
+    else:
+        t.type = "id"
+        t.value=posTs
+        posTs+=1
+    return t
+def t_entero(t):
     r'\d+'
     t.value = int(t.value)
     return t
@@ -71,13 +111,20 @@ if __name__ == '__main__':
     lexer=lex.lex()
     data = open(sys.argv[1], 'r')
     linea = data.readline()
+    output = open("output.txt", 'w')
     while linea != "":
         lexer.input(linea)
         linea = data.readline()
         while True:
             tok = lexer.token()
             if not tok: break
-            print tok
+            tokens  = ("(" + tok.type + ","  + str(tok.value) +")" ) 
+            print tokens
+            tokens+= " token number "+ str(tok.lexpos +1) + " in line " + str(tok.lineno)  +"\n"
+            output.write(tokens)
+            
+    data.close()
+    output.close()
     #lex.input("a+b")
     #for tok in iter(lex.token, None):
     #    print repr(tok.type), repr(tok.value)
