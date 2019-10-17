@@ -18,7 +18,7 @@ tokens = (
     'ENTERO',
     'ASIGNACION', # =
     'COMA',
-    'CADENA', #"hola"
+    #'CADENA', #"hola"
     'OPARITMETICO', #+
     'OPRELACIONAL', # >
     'OPLOGICO', # !
@@ -42,7 +42,7 @@ t_PARCER = r'\)'
 t_CORCHETEAB = r'\{'
 t_CORCHETECER = r'\}'
 
-#Reglas de expresiones regulares más complejas
+#Reglas de expresiones regulares ms complejas
 def t_ID(t):
     r'[a-zA-z_][a-zA-Z_0-9]*'
     t.type = palabras_clave.get(t.value,'ID')
@@ -51,5 +51,16 @@ def t_NUMBER(t):
     r'\d+'
     t.value = int(t.value)
     return t
+#def t_CADENA(t) :  
+#no se me ocurre como implementarlo
 
-        
+def t_comments(t):
+    r'\*'
+def t_newline(t):
+    r'\n+'  
+def t_error(t):
+    t.skip(1)
+t_ignore = ' \t' #Contiene espacios y tabuladores
+
+if __name__ == '__main__':
+     lex.runmain()
