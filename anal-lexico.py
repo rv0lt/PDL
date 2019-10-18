@@ -85,13 +85,13 @@ def t_parCerr(t):
         t.value="-"
         return t
 def t_corchAb(t):
-    r'\{'
+    r'\['
     global comentario
     if(not comentario):
         t.value="-"
         return t
 def t_corchCerr(t):
-    r'\}'
+    r'\]'
     global comentario
     if(not comentario):
         t.value="-"
