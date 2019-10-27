@@ -70,8 +70,6 @@ def t_coma(t):
 def t_puntoComa(t):
     r';'
     if(not comentario):
-        #cada vez que leo un pto y coma paso otra vez a zona de uso
-        tabla_simbolos.declaracion=False
         t.value=" "
         return t
 def t_parAb(t):
@@ -98,7 +96,8 @@ def t_corchCerr(t):
     r'\}'
     if(not comentario):
         t.value=" "
-        tabla_simbolos.destuirTSL
+        tabla_simbolos.destuirTSL()
+        funcion.reinicio()
         return t
 def t_opArt(t):
     r'\+'
@@ -121,19 +120,19 @@ def t_id(t):
                     tipo= t.type
             elif t.type == 'function': #voy a leer una funcion
                     estoy_en_fun=True
-                    funcion.flag = False
         else:
             t.type = "id"
-            q=None
             if estoy_en_fun:
                     if not funcion.flag:
                             funcion.retorno=tipo
                             funcion.nombre=t.value
                             funcion.flag=True
+                            q=tabla_simbolos.insertarTS(t.value, "funcion")
                     else:
                             funcion.nParam+=1
                             funcion.tipoParam.append(tipo)
                             funcion.nombreParam.append(t.value)
+                            q = tabla_simbolos.insertarTSL()
 
             elif tabla_simbolos.declaracion: #zona declaracion
                     q=tabla_simbolos.buscarTS(t.value)
@@ -141,11 +140,13 @@ def t_id(t):
                             raise Exception("id ya declarada")
                     else:
                             q= tabla_simbolos.insertarTS(t.value,tipo)
+                            #una vez que he leido el ID paso a zona de uso 
+                            tabla_simbolos.declaracion=False
+            
             else: #zona de uso
                     q= tabla_simbolos.buscarTS(t.value)
                     if q is None:
                         raise Exception("id no declarado")
-            if q is None: q=1
             t.value=q
             tipo=None
         return t
