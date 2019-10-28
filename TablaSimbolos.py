@@ -6,7 +6,7 @@ class TablaSimbolos:
         self.declaracion = True #zona declaracion o uso        
         self.txt_completo=""
 
-        self.txt_global ="TABLA PRINCIPAL #1:\n"
+        self.txt_global ="#1:\n"
         self.tabla_global = {}
         self.despl_global = 0 #desplazamiento de la TS global
         
@@ -51,27 +51,28 @@ class TablaSimbolos:
             tp ="'string'"
         elif tipo == "funcion":
             return pos
-        self.txt_actual+=("* LEXEMA '" + lexema + "'\n" +
-            "+ tipo: " + tp + "\n" +
-            "+ despl: " + str(despl) +"\n"
+        self.txt_actual+=("*'" + lexema + "'\n" +
+            "+ tipo:" + tp + "\n" +
+            "+ despl:" + str(despl) +"\n"
             )
         return pos
     def crearFuncion(self,funcion):
-        texto=("* LEXEMA '" + funcion.nombre + "'\n" +
-            "+ tipo: 'funcion'\n" + 
-            "+ numParam: " + str(funcion.nParam) + "\n")
+        texto=("*'" + funcion.nombre + "'\n" +
+            "+ tipo:'funcion'\n" + 
+            "+ numParam:" + str(funcion.nParam) + "\n")
         npar= funcion.nParam
         aux=1
         while(npar>0):
-            texto+="+ TipoParam" + str(aux) +": '" + funcion.tipoParam[aux-1] +"'\n"
+            texto+="+ TipoParam" + str(aux) +":'" + funcion.tipoParam[aux-1] +"'\n"
             npar-=1
             aux+=1
-        texto+=("+ TipoRetorno: '" + str(funcion.retorno) + "'\n" +
-            "+ EtiqFuncion: 'ET" + funcion.nombre + "'\n")
+        
+        if not(funcion.retorno is None): texto+=("+ TipoRetorno:'" + str(funcion.retorno) + "'\n") 
+        texto+=("+ EtiqFuncion:'ET" + funcion.nombre + "'\n")
         self.txt_actual+=texto
         self.crearTSL(funcion.tipoParam, funcion.nombreParam)
     def crearTSL(self, tipoParam, nombreParam):
-        #guardo en global los datos de local
+        #guardo en global los datos de actual
         self.despl_global= self.despl_actual
         self.tabla_global = self.tabla_actual
         self.txt_global = self.txt_actual
@@ -80,7 +81,7 @@ class TablaSimbolos:
         self.tabla_actual=self.tabla_local
         self.despl_local =0
         self.despl_actual= self.despl_local
-        self.txt_local = ("TABLA LOCAL #" + str(self.cont)+ ":\n")
+        self.txt_local = ("#" + str(self.cont)+ ":\n")
         self.txt_actual = self.txt_local
         #creo el texto para escribir
         self.cont+=1
@@ -101,7 +102,7 @@ class TablaSimbolos:
         self.txt_actual = self.txt_global
     def volcar(self):
         output= open("ts.txt", 'w')
-        self.txt_completo=self.txt_global+self.txt_completo
+        self.txt_completo=self.txt_actual+self.txt_completo
         output.write(self.txt_completo)
         output.close
 

@@ -154,7 +154,7 @@ def t_entero(t):
     r'\d+\.?(\d+)?'
     if(not comentario):
         if eval(t.value) > 32767 or '.' in t.value:
-            print ("Lexical: illegal character '%s' in line '%d' position" % (t.value, t.lineno))
+            raise Exception ("Lexical: illegal character '%s' in line '%d' position" % (t.value, t.lineno))
             t.lexer.skip(1)
         else:
             t.value = eval(t.value)
