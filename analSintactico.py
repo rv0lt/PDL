@@ -1,48 +1,86 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-
+res=[]
+aux=""
 producciones = {
 
-	1 : ["P", "D", "P"],
-	2 : ["P", "F", "P"],
-	3 : ["P" , "S", "P"],
-	4 : ["P", "SC", "P"],
-	5 : ["P", ""],
+	"P D P" : 1,
+	"P F P" : 2,
+	"P S P" : 3,
+	"P SC P" : 4,
+	"P  " : 5,
 
-	6 : ["D", "var", "T","id", ";"],
+	"D var T id ;" : 6,
 	
-	7 : ["T","int"],
-	8 : ["T","string"],
-	9 : ["T","boolean"],
+	"T int" : 7,
+	"T string": 8,
+	"T boolean" : 9,
 	
-	10 : ["F","function", "T'", "id", "(", "A", ")", "{", "C", "}"],
+	"F function T' id ( A ) { C }" : 10,
 	
-	11 : ["T'", "T"],
-	12 : ["T'", ""],
+	"T' T" : 11,
+	"T'  " : 12,
 	
-	13 : ["A", ""],
-	14 : ["A", "T", "id", "A'"],
+	"A  " : 13,
+	"A T id A'" : 14,
 	
-	15 : ["A'", ""],
-	16 : ["A'", ",", "T", "id", "A'"],
+	"A'  " : 15,
+	"A' , T id A'": 16,
 
-	17 : ["C", "D", "C"],
-	18 : ["C", "S", "C"],
-	19 : ["C", ""],
-	20 : ["C","SC", "C"],
+	"C D C" : 17,
+	"C S C" : 18,
+	"C  " :19,
+	"C SC C" : 20,
 
-	21 : ["S","if", "(", "E", ")", "S"],
-	22 : ["S", "id", "O"],
-	23 : ["S", "print", "(", "E", ")", ";"],
-	24 : ["S", "input", "(", "E", ")", ";"],
-	25 : ["S", "return", "X", ";"],
+	"S if ( E ) S" : 21,
+	"S id O" : 22,
+	"S print ( E ) ;": 23,
+	"S input ( E ) ;" : 24,
+	"S return X ;" : 25,
 
-	26 : ["O", "=", "E", ";"],
-	27 : ["O", "|=", "E", ";"],
-	28 : ["O", "(", "L", ")", ";"],
+	"O = E ;" : 26,
+	"O |= E ;" : 27,
+	"O ( L ) ;" : 28,
 
-	29 : ["L", ""],
-	30 : ["L", "id", "L'"]
+	"L  " : 29,
+	"L id L'": 30,
+
+	"L'  " :31,
+	"L' , id L1" : 32,
+	"X E": 33,
+	"X  ": 34,
+
+	"SC for ( B ; E ; B' ) { C }": 35,
+
+	"B id = E" : 36,
+	"B  " : 37,
+
+	"B' id B''" : 38,
+	"B'  " : 39,
+
+	"B'' = E": 40,
+	"B'' |= E": 41,
+
+	"E K E'" : 42,
+
+	"E'  ": 43,
+	"E' > K E'" : 44,
+
+	"K ! K" : 45,
+	"K U" : 46,
+
+	"U V U'" : 47,
+
+	"U'  " : 48,
+	"U' + V U'": 49,
+
+	"V id J": 50,
+	"V cte_entera" : 51,
+	"V cadena" : 52,
+	"V ( E )" : 53,
+
+	"J ( L )" : 54,
+	"J  " : 55
 }
 
 class PredictiveParser(object):
@@ -89,6 +127,7 @@ class PredictiveParser(object):
 		return True
 
 	def verbose_match(self, seq, display_stack=False):
+    		global res, aux
 		seq.append('$')
 		si = 0
 		stack = ['$', self.start]
@@ -108,9 +147,24 @@ class PredictiveParser(object):
 					stack.pop()
 					if prod == [""]:
 						print ("** Action: derive {0} on `{1}` to: ε".format(top, seq[si]))
+						prod2=str(top)+"  "
+						prod2 = producciones.get(prod2)
+						res.append(prod2)
+						aux+=str(prod2)+" "
+						
 					else:
 						print ("** Action: derive {0} on `{1}` to: {2}".format(top, seq[si], " ".join(prod)))
+						prod2=str(top)+" " + str(" ".join(prod))
+						prod2 = producciones.get(prod2)
+						res.append(prod2)
+						aux+=str(prod2) + " "
 						stack.extend(reversed(prod))
+					with open("produciones.txt", 'w') as producc:
+						producc.write("D " + aux + "\n")
+					
+					#print(res)
+					#print("\n")
+					#print(aux)
 				except KeyError:
 					print ("ERROR: Not able to find derivation of {0} on `{1}`".format(top, seq[si]))
 					return False
