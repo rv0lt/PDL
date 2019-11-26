@@ -4,10 +4,12 @@ import sys
 import re
 from TablaSimbolos import TablaSimbolos
 from TablaSimbolos import Fun
+from gramatica import parser
 tipo=None
 comentario=False
 tabla_simbolos = TablaSimbolos()
 estoy_en_fun=False #sirve para indicar si voy a leer una funcion
+listaTokens=[] #Para pasarle al sintactico
 funcion = Fun()
 tipos=(
         #palabras clave que hacen referencia a los tipos de datos
@@ -25,9 +27,10 @@ palabras_clave = tipos +(
     'if',
     'input'
 )
+
 tokens = palabras_clave + (
     'id',
-    'entero',
+    'cte_entera',
     'asignacion', # =
     'coma', # ,
     'cadena', #"hola"
@@ -45,41 +48,49 @@ tokens = palabras_clave + (
 def t_opEsp(t):
     r'\|='
     if(not comentario):
+        listaTokens.append(t.value)
         t.value=" "
         return t
 def t_opRel(t):
     r'>'
     if(not comentario):
+        listaTokens.append(t.value)
         t.value=" "
         return t
 def t_opLog(t):
     r'!'
     if(not comentario):
+        listaTokens.append(t.value)
         t.value=" "
         return t
 def t_asignacion(t):
     r'='
     if(not comentario):
+        listaTokens.append(t.value)
         t.value=" "
         return t
 def t_coma(t):
     r','
     if(not comentario):
+        listaTokens.append(t.value)
         t.value=" "
         return t
 def t_puntoComa(t):
     r';'
     if(not comentario):
+        listaTokens.append(t.value)
         t.value=" "
         return t
 def t_parAb(t):
     r'\('
     if(not comentario):
+        listaTokens.append(t.value)
         t.value=" "
         return t
 def t_parCerr(t):
     r'\)'
     if(not comentario):
+        listaTokens.append(t.value)
         t.value=" "
         return t
 def t_corchAb(t):
@@ -90,11 +101,13 @@ def t_corchAb(t):
                 #si estoy leyendo una funcion y veo las llaves abiertas signigica que ya he dejado de declararla
                 estoy_en_fun=False
                 tabla_simbolos.crearFuncion(funcion)
+        listaTokens.append(t.value)
         t.value=" "
         return t
 def t_corchCerr(t):
     r'\}'
     if(not comentario):
+        listaTokens.append(t.value)
         t.value=" "
         tabla_simbolos.destuirTSL()
         funcion.reinicio()
@@ -102,6 +115,7 @@ def t_corchCerr(t):
 def t_opArt(t):
     r'\+'
     if(not comentario):
+        listaTokens.append(t.value)
         t.value = " "
         return t        
  
@@ -111,6 +125,7 @@ def t_id(t):
         global tipo
         global estoy_en_fun
         if t.value in palabras_clave:
+            listaTokens.append(t.value)
             t.type = t.value
             t.value = " "
             if t.type == 'var': #cada vez que leo var entro en zona de declaraciom
@@ -122,6 +137,7 @@ def t_id(t):
                     estoy_en_fun=True
         else:
             t.type = "id"
+            listaTokens.append(t.type)
             if estoy_en_fun:
                     if not funcion.flag:
                             funcion.retorno=tipo
@@ -150,7 +166,7 @@ def t_id(t):
             t.value=q
             tipo=None
         return t
-def t_entero(t):
+def t_cte_entera(t):
     r'\d+\.?(\d+)?'
     if(not comentario):
         if eval(t.value) > 32767 or '.' in t.value:
@@ -158,10 +174,14 @@ def t_entero(t):
             t.lexer.skip(1)
         else:
             t.value = eval(t.value)
+            listaTokens.append(t.type)
             return t
 def t_cadena(t) :  
     r'"([^"\\]|(\\.))*"'
     if(not comentario):
+        if len(t.value)-2>64 : 
+                raise Exception("Cadena demasiado larga")
+        listaTokens.append(t.type)
         return t
 def t_newline(t):
     r'\n'
@@ -208,7 +228,17 @@ if __name__ == '__main__':
             output.write(tokens+"\n") 
             tokens+= " token number "+ str(tok.lexpos +1) + " in line " + str(tok.lineno)  +"\n"
             print(tokens)
-    tabla_simbolos.volcar()        
+    tabla_simbolos.volcar()
+    #Ahora he generado un fichero con los tokens y he creado la tabla de Simbolos
+    #El siguiente paso es pasar la lista de Tokens identificados al parser
+    print(listaTokens) 
+    if parser.match(listaTokens):
+            print("ACEPT")
+    else:
+            print("REJEC")
+    parser.verbose_match(listaTokens, True)
+
+
     data.close()
     output.close()
     #lex.input("a+b")
