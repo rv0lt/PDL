@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-res=[]
-aux=""
+resultado=""
 producciones = {
 
 	"P D P" : 1,
@@ -127,7 +126,7 @@ class PredictiveParser(object):
 		return True
 
 	def verbose_match(self, seq, display_stack=False):
-    		global res, aux
+    		global resultado
 		seq.append('$')
 		si = 0
 		stack = ['$', self.start]
@@ -147,20 +146,18 @@ class PredictiveParser(object):
 					stack.pop()
 					if prod == [""]:
 						print ("** Action: derive {0} on `{1}` to: ε".format(top, seq[si]))
-						prod2=str(top)+"  "
-						prod2 = producciones.get(prod2)
-						res.append(prod2)
-						aux+=str(prod2)+" "
+						aux=str(top)+"  "
+						aux = producciones.get(aux)
+						resultado+=str(aux)+" "
 						
 					else:
 						print ("** Action: derive {0} on `{1}` to: {2}".format(top, seq[si], " ".join(prod)))
-						prod2=str(top)+" " + str(" ".join(prod))
-						prod2 = producciones.get(prod2)
-						res.append(prod2)
-						aux+=str(prod2) + " "
+						aux=str(top)+" " + str(" ".join(prod))
+						aux = producciones.get(aux)
+						resultado+=str(aux) + " "
 						stack.extend(reversed(prod))
 					with open("produciones.txt", 'w') as producc:
-						producc.write("D " + aux + "\n")
+						producc.write("D " + resultado + "\n")
 					
 					#print(res)
 					#print("\n")
