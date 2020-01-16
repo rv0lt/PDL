@@ -5,10 +5,12 @@ import re
 from TablaSimbolos import TablaSimbolos
 from TablaSimbolos import Fun
 from gramatica import parser
+import gramatica
 tipo=None
 comentario=False
 tabla_simbolos = TablaSimbolos()
 estoy_en_fun=False #sirve para indicar si voy a leer una funcion
+flagFor = False
 listaTokens=[] #Para pasarle al sintactico
 funcion = Fun()
 tipos=(
@@ -106,11 +108,15 @@ def t_corchAb(t):
         return t
 def t_corchCerr(t):
     r'\}'
+    global flagFor
     if(not comentario):
         listaTokens.append(t.value)
         t.value=" "
-        tabla_simbolos.destuirTSL()
-        funcion.reinicio()
+        if not flagFor:
+                tabla_simbolos.destuirTSL()
+                funcion.reinicio()
+        else:
+                flagFor=False
         return t
 def t_opArt(t):
     r'\+'
@@ -124,6 +130,7 @@ def t_id(t):
     if(not comentario):
         global tipo
         global estoy_en_fun
+        global flagFor
         if t.value in palabras_clave:
             listaTokens.append(t.value)
             t.type = t.value
@@ -135,6 +142,8 @@ def t_id(t):
                     tipo= t.type
             elif t.type == 'function': #voy a leer una funcion
                     estoy_en_fun=True
+            elif t.type == 'for':
+                    flagFor=True
         else:
             t.type = "id"
             listaTokens.append(t.type)
@@ -237,6 +246,8 @@ if __name__ == '__main__':
     else:
             print("REJEC")
     parser.verbose_match(listaTokens, True)
+    #gramatica.res
+   # print(gramatica.res)
 
 
     data.close()

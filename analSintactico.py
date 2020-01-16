@@ -45,7 +45,7 @@ producciones = {
 	"L id L'": 30,
 
 	"L'  " :31,
-	"L' , id L1" : 32,
+	"L' , id L'" : 32,
 	"X E": 33,
 	"X  ": 34,
 
