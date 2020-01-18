@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
+
 resultado=""
 producciones = {
 
@@ -136,8 +137,9 @@ class PredictiveParser(object):
 				print ("Stack:", stack)
 			if top == seq[si]:
 				si = si + 1
-				print ("** Action: match `{0}`".format(top))
+				#print ("** Action: match `{0}`".format(top))
 				stack.pop()
+    					
 			elif (self.is_terminal(top)):
 				return False
 			else:
@@ -145,13 +147,14 @@ class PredictiveParser(object):
 					prod = self.table[top, seq[si]]
 					stack.pop()
 					if prod == [""]:
-						print ("** Action: derive {0} on `{1}` to: ε".format(top, seq[si]))
+				#		print ("** Action: derive {0} on `{1}` to: ε".format(top, seq[si]))
 						aux=str(top)+"  "
 						aux = producciones.get(aux)
 						resultado+=str(aux)+" "
 						
+						
 					else:
-						print ("** Action: derive {0} on `{1}` to: {2}".format(top, seq[si], " ".join(prod)))
+				#		print ("** Action: derive {0} on `{1}` to: {2}".format(top, seq[si], " ".join(prod)))
 						aux=str(top)+" " + str(" ".join(prod))
 						aux = producciones.get(aux)
 						resultado+=str(aux) + " "
@@ -159,11 +162,9 @@ class PredictiveParser(object):
 					with open("produciones.txt", 'w') as producc:
 						producc.write("D " + resultado + "\n")
 					
-					#print(res)
-					#print("\n")
-					#print(aux)
 				except KeyError:
-					print ("ERROR: Not able to find derivation of {0} on `{1}`".format(top, seq[si]))
+				#	print ("ERROR: Not able to find derivation of {0} on `{1}`".format(top, seq[si]))
+					print("Se ha encontrado un {1}: No se esperaba un {1}").format(seq[si], seq[si])
 					return False
 			top = stack[-1]
 		return True

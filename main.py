@@ -407,8 +407,10 @@ if __name__ == '__main__':
             tok = lexer.token()
             if not tok: break
             tokens  = ("<" + tok.type + ","  + str(tok.value) +">" ) 
+            #print(tokens)
             output.write(tokens+"\n") 
             tokens+= " token number "+ str(tok.lexpos +1) + " in line " + str(tok.lineno)  +"\n"
+            #print(tokens)
     tabla_simbolos.volcar()
     #Ahora he generado un fichero con los tokens y he creado la tabla de Simbolos
     #El siguiente paso es pasar la lista de Tokens identificados al parser
