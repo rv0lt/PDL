@@ -12,6 +12,7 @@ comentario=False
 tabla_simbolos = TablaSimbolos()
 estoy_en_fun=False #sirve para indicar si voy a leer una funcion
 flagFor = False
+flagFor2 = False
 contador=0
 contReturn=0
 flagIf = False
@@ -19,6 +20,7 @@ metaFlagIf = False
 flagExpresion=False
 anotherFlag = False
 opEsp=False
+checkParentesis=False
 listaExpresion=[]
 listaTokens=[] #Para pasarle al sintactico
 funcion = Fun()
@@ -75,7 +77,7 @@ def evaluar_expresion():
                                 tipoRetorno=elem
                         check=True
                 else:
-                        if elem == "!" and tipoRetorno != "boolean":
+                        if elem == "!" and (tipoRetorno != "boolean" and not simboloMayorQue):
                                 return "error"
                         elif elem == ">":
                                 if tipoRetorno != "int" or simboloMayorQue:
@@ -151,7 +153,7 @@ def t_puntoComa(t):
                         if exp!='boolean':
                                 raise Exception ("Error en la condicion del for")
         
-        if flagExpresion:
+        if flagExpresion and not flagIf:
                 flagExpresion = False
                 exp = evaluar_expresion()
                 if exp == "error":
@@ -178,15 +180,25 @@ def t_puntoComa(t):
         return t
 def t_parAb(t):
     r'\('
+    global checkParentesis
     if(not comentario):
         listaTokens.append(t.value)
+        if flagIf and not checkParentesis:
+                checkParentesis=True
         t.value=" "
         return t
 def t_parCerr(t):
     r'\)'
-    global anotherFlag,flagFor, opEsp
+    global anotherFlag,flagFor, flagIf, opEsp, checkParentesis
     if(not comentario):
         listaTokens.append(t.value)
+        if flagIf and not checkParentesis:
+                flagIf=False
+                exp=evaluar_expresion()
+                if exp == "error":
+                        raise Exception("Asignacion de tipos distintos en el if")
+                        
+
         if flagFor:
                 flagFor=False
                 exp=evaluar_expresion()
@@ -211,6 +223,8 @@ def t_parCerr(t):
                         if tabla_simbolos.buscarnParamFuncion(funcionAux.nombre) > 0:
                                 raise Exception ("Numero de argumentos erroneo")
                 funcionAux.reinicio
+        if checkParentesis:
+                checkParentesis=False
         t.value=" "
         return t
 def t_corchAb(t):
@@ -226,18 +240,18 @@ def t_corchAb(t):
         return t
 def t_corchCerr(t):
     r'\}'
-    global flagFor,contReturn
+    global flagFor2,contReturn
     if(not comentario):
         listaTokens.append(t.value)
         t.value=" "
-        if not flagFor:
+        if not flagFor2:
                 if contReturn <=0 and funcionAux.retorno is not None:
                         raise Exception("Error en el cuerpo de la funcion")
                 tabla_simbolos.destuirTSL()
                 funcion.reinicio()
                 funcionAux.reinicio()
         else:
-                flagFor=False
+                flagFor2=False
         return t
 def t_opArt(t):
     r'\+'
@@ -254,7 +268,7 @@ def t_id(t):
     if(not comentario):
         global tipo
         global estoy_en_fun
-        global flagFor
+        global flagFor, flagFor2
         global flagIf,metaFlagIf
         global flagExpresion
         global anotherFlag
@@ -274,10 +288,12 @@ def t_id(t):
                     contReturn=0
             elif t.type == 'for':
                     flagFor=True
+                    flagFor2=True
                     contador=2
             elif t.type == 'if':
                     flagIf=True
                     metaFlagIf=True
+                    flagExpresion=True
             elif t.type == 'print' or t.type == 'input':
                     flagExpresion=True
                     lexema="print"
@@ -298,10 +314,10 @@ def t_id(t):
                     else:
                         listaExpresion.append(tabla_simbolos.buscarTipo(t.value))
             listaTokens.append(t.type)
-            if flagIf:
-                    flagIf=False
-                    if tabla_simbolos.buscarTipo(t.value) != "boolean":
-                            raise Exception("error en el if")
+            #if flagIf:
+            #        flagIf=False
+            #        if tabla_simbolos.buscarTipo(t.value) != "boolean":
+            #                raise Exception("error en el if")
             if anotherFlag:
                 if flagExpresion:
                         funcionAux.nParam+=1
