@@ -129,7 +129,7 @@ class TablaSimbolos:
         self.txt_completo+=self.txt_actual
         self.txt_actual = self.txt_global
     def volcar(self):
-        output= open("ts.txt", 'w')
+        output= open("output/ts.txt", 'w')
         self.txt_completo=self.txt_actual+self.txt_completo
         output.write(self.txt_completo)
         output.close

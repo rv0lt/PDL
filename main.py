@@ -21,6 +21,7 @@ flagExpresion=False
 anotherFlag = False
 opEsp=False
 checkParentesis=False
+funPass=False
 listaExpresion=[]
 listaTokens=[] #Para pasarle al sintactico
 funcion = Fun()
@@ -63,8 +64,10 @@ def evaluar_expresion():
         check=False
         tipoRetorno=None
         simboloMayorQue = False
+        print(listaExpresion)
         while len(listaExpresion)>0:
                 elem= listaExpresion.pop()
+
                 if not check:
                         if elem == ">" or elem == "!" or elem == "+":
                                 return "error"
@@ -88,6 +91,7 @@ def evaluar_expresion():
                         check=False
                         tipoRetorno = elem
         if tipoRetorno == "!" or simboloMayorQue: tipoRetorno = "boolean"
+        #print(tipoRetorno)
         return tipoRetorno
                                 
 
@@ -149,6 +153,7 @@ def t_puntoComa(t):
                 contador -=1
                 if contador == 0:
                         #flagExpresion=False
+                       #print(listaExpresion)
                         exp=evaluar_expresion()
                         if exp!='boolean':
                                 raise Exception ("Error en la condicion del for")
@@ -170,12 +175,19 @@ def t_puntoComa(t):
                         if ( (tabla_simbolos.buscarTipo(lexema) != 'boolean') or (exp!='boolean') ):
                                 raise Exception ("Tipo no logico en asignacion con or logico")
                 elif tabla_simbolos.buscarTipo(lexema) != exp:
+                        print("------\n")
+                        print(tabla_simbolos.buscarTipo(lexema))
+                        print(lexema)
+                        print(exp)
+                        print("-------\n")
+                        #print(exp)
                         if flagFor and exp!=None:
                                 raise Exception("Asignacion de tipos distintos en la iniciacion del for")
-                        elif not flagFor: raise Exception("Tipo incorrecto en asignacion")
+                        elif not flagFor and lexema!="": raise Exception("Tipo incorrecto en asignacion")
 
         if contador ==1 and flagFor:
                 flagExpresion=True
+        lexema=""#Es posible que falle por esto
         t.value=" "
         return t
 def t_parAb(t):
@@ -189,13 +201,14 @@ def t_parAb(t):
         return t
 def t_parCerr(t):
     r'\)'
-    global anotherFlag,flagFor, flagIf, opEsp, checkParentesis
+    global anotherFlag,flagFor, flagIf, opEsp, checkParentesis,funPass
     if(not comentario):
         listaTokens.append(t.value)
-        if flagIf and not checkParentesis:
+        if flagIf:
                 flagIf=False
                 exp=evaluar_expresion()
-                if exp == "error":
+
+                if exp != "boolean":
                         raise Exception("Asignacion de tipos distintos en el if")
                         
 
@@ -209,20 +222,31 @@ def t_parCerr(t):
                         opEsp=False
                         if ( (tabla_simbolos.buscarTipo(lexema) != 'boolean') or (exp!='boolean') ):
                                 raise Exception ("Tipo incorrecto en actualizacion del for")
+       # print(anotherFlag)
+       # print(flagExpresion)
         if anotherFlag and flagExpresion:
+                print(funcionAux.nombre)
                 anotherFlag=False
                 if funcionAux.nParam > 1:
-                        if funcionAux.nParam-1 != tabla_simbolos.buscarnParamFuncion(funcion.nombre):
+                        print(funcionAux.nParam-1)
+                        print(funcionAux.nombre)
+                        print(tabla_simbolos.buscarnParamFuncion(funcionAux.nombre))
+
+
+                        if funcionAux.nParam-1 != tabla_simbolos.buscarnParamFuncion(funcionAux.nombre):
+                                funPass=False
                                 raise Exception ("Numero de parametros equivocado")
                         funcionAux.tipoParam.reverse()
                         funcionAux.tipoParam.pop()
                         funcionAux.tipoParam.reverse()
+
                         if funcionAux.tipoParam != tabla_simbolos.buscarTipoParamFuncion(funcionAux.nombre):
+                                funPass=False
                                 raise Exception ("Tipos de los atributos equivocado")
                 else:
                         if tabla_simbolos.buscarnParamFuncion(funcionAux.nombre) > 0:
                                 raise Exception ("Numero de argumentos erroneo")
-                funcionAux.reinicio
+                funcionAux.reinicio()
         if checkParentesis:
                 checkParentesis=False
         t.value=" "
@@ -234,6 +258,7 @@ def t_corchAb(t):
         if estoy_en_fun:
                 #si estoy leyendo una funcion y veo las llaves abiertas signigica que ya he dejado de declararla
                 estoy_en_fun=False
+                tabla_simbolos.declaracion=False
                 tabla_simbolos.crearFuncion(funcion)
         listaTokens.append(t.value)
         t.value=" "
@@ -305,6 +330,10 @@ def t_id(t):
                             contReturn-=1
         else:
             t.type = "id"
+            if tabla_simbolos.buscarTipo(t.value) == "funcion":
+                    flagExpresion=True
+                    if anotherFlag:
+                            funPass=True
             if not flagExpresion: lexema=t.value
             if flagExpresion and not anotherFlag:
                     if tabla_simbolos.buscarTipo(t.value) == "funcion":
@@ -338,6 +367,7 @@ def t_id(t):
             elif tabla_simbolos.declaracion: #zona declaracion
                     q=tabla_simbolos.buscarTS(t.value)
                     if q is not None:
+                            #print(t.value)
                             raise Exception("id ya declarada")
                     else:
                             q= tabla_simbolos.insertarTS(t.value,tipo)
@@ -414,7 +444,7 @@ if __name__ == '__main__':
     tabla_simbolos =TablaSimbolos()
     data = open(sys.argv[1], 'r')
     linea = data.readline()
-    output = open("tokens.txt", 'w')
+    output = open("output/tokens.txt", 'w')
     lex.lex(reflags=re.DOTALL)
     while linea != "":
         lexer.input(linea)
@@ -436,6 +466,7 @@ if __name__ == '__main__':
     else:
             print("REJEC")
     parser.verbose_match(listaTokens, False)
+    #parser.print_table()
     #gramatica.res
    # print(gramatica.res)
 

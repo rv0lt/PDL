@@ -43,10 +43,10 @@ producciones = {
 	"O ( L ) ;" : 28,
 
 	"L  " : 29,
-	"L id L'": 30,
+	"L E L'": 30,
 
 	"L'  " :31,
-	"L' , id L'" : 32,
+	"L' , E L'" : 32,
 	"X E": 33,
 	"X  ": 34,
 
@@ -80,7 +80,8 @@ producciones = {
 	"V ( E )" : 53,
 
 	"J ( L )" : 54,
-	"J  " : 55
+	"J  " : 55,
+
 }
 
 class PredictiveParser(object):
@@ -160,7 +161,7 @@ class PredictiveParser(object):
 						aux = producciones.get(aux)
 						resultado+=str(aux) + " "
 						stack.extend(reversed(prod))
-					with open("produciones.txt", 'w') as producc:
+					with open("output/produciones.txt", 'w') as producc:
 						producc.write("D " + resultado + "\n")
 					
 				except KeyError:
@@ -283,5 +284,6 @@ class PredictiveParser(object):
 							follow_dict[prod[i]] = follow_dict[prod[i]].union(follow_dict[head])
 
 			if changes == follow_dict:
+				#print(follow_dict)
 				return follow_dict	
 
