@@ -1,0 +1,34 @@
+<var, >
+<boolean, >
+<id,1>
+<puntoComa, >
+<var, >
+<int, >
+<id,2>
+<puntoComa, >
+<print, >
+<parAb, >
+<cadena,"Elige un numero del 0 al 9:">
+<parCerr, >
+<puntoComa, >
+<function, >
+<boolean, >
+<id,3>
+<parAb, >
+<boolean, >
+<id,4>
+<parCerr, >
+<corchAb, >
+<print, >
+<parAb, >
+<cadena,"Has acertado!">
+<parCerr, >
+<puntoComa, >
+<id,4>
+<opEsp, >
+<id,1>
+<puntoComa, >
+<return, >
+<id,4>
+<puntoComa, >
+<corchCerr, >

@@ -1,0 +1,14 @@
+#1:
+*'z'
++ tipo:'ent'
++ despl:0
+*'test'
++ tipo:'funcion'
++ numParam:1
++ TipoParam1:'ent'
++ TipoRetorno: 
++ EtiqFuncion:'ETtest'
+#2:
+*'i'
++ tipo:'ent'
++ despl:0

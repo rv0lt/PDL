@@ -1,0 +1,11 @@
+para ejecutar el procesador:
+
+1.Abrir una consola CMD o Dos de windows
+2.Moverse hacia la carpeta main
+3. escribir main.exe codigo.txt, donde codigo.txt es el codigo que se dese procesar y el cual se encuentra en la carpeta main
+4. Si se muestra en terminal ACEPT signigica que el codigo se ha procesado correctamente
+5. Los ficheros tokens.txt, producciones.txt y ts.txt que se han generado en la carpeta main contienen respectivamente:
+	A.Los tokens encontrados
+	B.Las reglas de la gramatica que se han usado
+	C.La tabla de simbolos resultante
+	

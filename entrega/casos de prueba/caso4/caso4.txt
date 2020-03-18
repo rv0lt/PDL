@@ -1,0 +1,8 @@
+var string a;
+print("Introduce tu nombre: ");
+input(a);
+var int b;
+print("Introduce tu edad");
+input(b);
+if(b>18)
+	print("Acceso permitido");

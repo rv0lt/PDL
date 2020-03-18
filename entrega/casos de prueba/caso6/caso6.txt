@@ -1,0 +1,5 @@
+var string a;
+a = "hola"
+var int b;
+b = 5;
+return a + b;

@@ -1,0 +1,17 @@
+#1:
+*'acierto'
++ tipo:'log'
++ despl:0
+*'intro'
++ tipo:'ent'
++ despl:1
+*'sorpresa'
++ tipo:'funcion'
++ numParam:1
++ TipoParam1:'log'
++ TipoRetorno:'log'
++ EtiqFuncion:'ETsorpresa'
+#2:
+*'aux'
++ tipo:'log'
++ despl:0

@@ -1,0 +1,11 @@
+var int argc;
+argc = 3;
+var int res;
+res =0;
+var int a;
+a = 3;
+var int i;
+for(i = "hola"; i>argc;){
+	res = res + a;
+	i = i + 1;
+}

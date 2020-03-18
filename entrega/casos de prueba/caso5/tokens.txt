@@ -1,0 +1,34 @@
+<var, >
+<int, >
+<id,1>
+<puntoComa, >
+<print, >
+<parAb, >
+<cadena,"Introduce un numero menor de 50">
+<parCerr, >
+<puntoComa, >
+<input, >
+<parAb, >
+<id,1>
+<parCerr, >
+<puntoComa, >
+<for, >
+<parAb, >
+<puntoComa, >
+<cte_entera,50>
+<opRel, >
+<id,1>
+<puntoComa, >
+<id,1>
+<asignacion, >
+<id,1>
+<opArt, >
+<cte_entera,1>
+<parCerr, >
+<corchAb, >
+<print, >
+<parAb, >
+<id,1>
+<parCerr, >
+<puntoComa, >
+<corchCerr, >

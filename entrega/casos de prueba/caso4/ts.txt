@@ -1,0 +1,7 @@
+#1:
+*'a'
++ tipo:'cadena'
++ despl:0
+*'b'
++ tipo:'ent'
++ despl:64

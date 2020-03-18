@@ -1,0 +1,33 @@
+<print, >
+<parAb, >
+<cadena,"Introducir número:">
+<parCerr, >
+<puntoComa, >
+<var, >
+<int, >
+<id,1>
+<puntoComa, >
+<var, >
+<string, >
+<id,2>
+<puntoComa, >
+<id,2>
+<asignacion, >
+<cadena,"Enhorabuena! Tu número es mayor que 5!">
+<puntoComa, >
+<input, >
+<parAb, >
+<id,1>
+<parCerr, >
+<puntoComa, >
+<if, >
+<parAb, >
+<id,1>
+<opRel, >
+<cte_entera,5>
+<parCerr, >
+<print, >
+<parAb, >
+<id,2>
+<parCerr, >
+<puntoComa, >

@@ -1,0 +1,55 @@
+<var, >
+<int, >
+<id,1>
+<puntoComa, >
+<function, >
+<id,2>
+<parAb, >
+<int, >
+<id,3>
+<parCerr, >
+<corchAb, >
+<for, >
+<parAb, >
+<id,3>
+<asignacion, >
+<cte_entera,0>
+<puntoComa, >
+<id,3>
+<opRel, >
+<cte_entera,10>
+<puntoComa, >
+<parCerr, >
+<corchAb, >
+<if, >
+<parAb, >
+<parAb, >
+<id,3>
+<opArt, >
+<cte_entera,5>
+<parCerr, >
+<opRel, >
+<cte_entera,10>
+<parCerr, >
+<print, >
+<parAb, >
+<cadena,"es mayor de 5">
+<parCerr, >
+<puntoComa, >
+<id,3>
+<asignacion, >
+<id,3>
+<opArt, >
+<cte_entera,1>
+<puntoComa, >
+<corchCerr, >
+<corchCerr, >
+<id,1>
+<asignacion, >
+<cte_entera,0>
+<puntoComa, >
+<id,2>
+<parAb, >
+<id,1>
+<parCerr, >
+<puntoComa, >

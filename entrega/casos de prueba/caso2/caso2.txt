@@ -1,0 +1,19 @@
+var boolean acierto;
+var int intro;
+print("Elige un numero del 0 al 9:");
+function int imprime(int a){
+	a=a+intro;
+	var string x;
+	return a + intro;
+
+}
+function boolean sorpresa(boolean aux, int p){
+		print("Has acertado!");
+		sorpresa(aux, p);
+		intro= imprime( 12 );
+		aux = intro > p+5;
+		return 12 > p + 5;
+}
+
+if(intro>5)
+	print(intro+8);

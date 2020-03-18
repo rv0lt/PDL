@@ -1,0 +1,39 @@
+<var, >
+<string, >
+<id,1>
+<puntoComa, >
+<print, >
+<parAb, >
+<cadena,"Introduce tu nombre: ">
+<parCerr, >
+<puntoComa, >
+<input, >
+<parAb, >
+<id,1>
+<parCerr, >
+<puntoComa, >
+<var, >
+<int, >
+<id,2>
+<puntoComa, >
+<print, >
+<parAb, >
+<cadena,"Introduce tu edad">
+<parCerr, >
+<puntoComa, >
+<input, >
+<parAb, >
+<id,2>
+<parCerr, >
+<puntoComa, >
+<if, >
+<parAb, >
+<id,2>
+<opRel, >
+<cte_entera,18>
+<parCerr, >
+<print, >
+<parAb, >
+<cadena,"Acceso permitido">
+<parCerr, >
+<puntoComa, >

@@ -1,0 +1,97 @@
+//// Conjunto Símbolos terminales
+Terminales = {
+    var id ; int string boolean function ( ) { } ,
+    if print input return = |= for > ! + cte_entera
+    cadena lambda
+}
+
+//// Conjunto de Símbolos no terrminales
+NoTerminales = {
+    P D T F T1 A A1 C S O L L1 X SC B B1 B2
+    E E1 K U U1 V J
+}
+
+Axioma = P 
+////Lista de Producciones
+Producciones = {
+    P -> D P            //// 1
+    P -> F P            //// 2  
+    P -> S P            //// 3
+    P -> SC P           //// 4
+    P -> lambda         //// 5
+
+    D -> var T id ;     //// 6
+
+    T -> int            //// 7
+    T -> string         //// 8
+    T -> boolean        //// 9
+
+    F -> function T1 id ( A ) { C }  //// 10
+
+    T1 -> T             //// 11
+    T1 -> lambda        //// 12
+
+    A -> lambda         //// 13
+    A -> T id A1        //// 14
+
+    A1 -> lambda        //// 15
+    A1 -> , T id A1     //// 16
+
+    C -> D C            //// 17
+    C -> S C             //// 18
+    C -> lambda         //// 19
+    C -> SC C           //// 20
+
+    S -> if ( E ) S      //// 21
+    S -> id O           //// 22
+    S -> print ( E ) ;   //// 23
+    S -> input ( E ) ;  //// 24
+    S -> return X ;     //// 25
+
+    O -> = E ;           //// 26
+    O -> |= E ;         //// 27
+    O -> ( L ) ;        //// 28
+
+    L -> lambda         //// 29
+    L -> E L1          //// 30
+
+    L1 -> lambda        //// 31
+    L1 -> , E L1       //// 32
+
+    X -> E              //// 33
+    X -> lambda         //// 34
+
+    SC -> for ( B ; E ; B1 ) { C } //// 35
+
+    B -> id = E         //// 36
+    B -> lambda         //// 37
+
+    B1 -> id B2         //// 38
+    B1 -> lambda        //// 39
+
+    B2 -> = E            //// 40
+    B2 -> |= E          //// 41
+
+    E -> K E1           //// 42
+    
+    E1 -> lambda         //// 43
+    E1 -> > K E1        //// 44
+
+    K -> ! K            //// 45
+    K -> U              //// 46
+
+    U -> V U1           //// 47
+
+    U1 -> lambda        //// 48
+    U1 -> + V U1        //// 49
+
+    V -> id J           //// 50
+    V -> cte_entera     //// 51
+    V -> cadena         //// 52
+    V -> ( E )          //// 53
+
+    J -> ( L )          //// 54
+    J -> lambda         //// 55            
+
+
+}

@@ -1,0 +1,7 @@
+function int suma (int num1, int num2)  { 
+return num1+num2;
+}
+var int d;
+d = 3;
+var int c; 
+c= suma(3,6,4);

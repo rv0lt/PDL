@@ -65,7 +65,7 @@ def limpiar_expresion():
         listaExpresionLimpiada=[]
         backup_listaExpresion=[]
         contParentesis_2=1
-        #print(listaExpresion)
+        print(listaExpresion)
         while len(listaExpresion)>0:
                 elem = listaExpresion.pop()
                 if elem == ')':
@@ -80,8 +80,8 @@ def limpiar_expresion():
                         listaExpresionLimpiada.reverse()
                         backup_listaExpresion = listaExpresion
                         listaExpresion=listaExpresionLimpiada
-                        #print("nueva expresion\n")
-                        #print(listaExpresion)
+                        print("nueva expresion\n")
+                        print(listaExpresion)
                         tipo = evaluar_expresion()
                         listaExpresion=backup_listaExpresion
                         return tipo
@@ -93,8 +93,8 @@ def evaluar_expresion():
         check=False
         tipoRetorno=None
         simboloMayorQue = False
-       #print("-----------------\n")
-        #print(listaExpresion)
+        print("-----------------\n")
+        print(listaExpresion)
         while len(listaExpresion)>0:
                 elem= listaExpresion.pop()
 
@@ -209,11 +209,11 @@ def t_puntoComa(t):
                         if ( (tabla_simbolos.buscarTipo(lexema) != 'boolean') or (exp!='boolean') ):
                                 raise Exception ("Tipo no logico en asignacion con or logico")
                 elif tabla_simbolos.buscarTipo(lexema) != exp:
-                        '''print("------\n")
+                        print("------\n")
                         print(tabla_simbolos.buscarTipo(lexema))
                         print(lexema)
                         print(exp)
-                        print("-------\n") '''
+                        print("-------\n")
                         #print(exp)
                         if flagFor and exp!=None:
                                 raise Exception("Asignacion de tipos distintos en la iniciacion del for")
@@ -235,7 +235,8 @@ def t_parAb(t):
                 contParentesis_1+=1
                 if contParentesis_1 !=0:
                         listaExpresion.append(t.value)
-
+                print("Parentesis abierto\n")
+                print(contParentesis_1)
         t.value=" "
         return t
 def t_parCerr(t):
@@ -249,7 +250,7 @@ def t_parCerr(t):
                         listaExpresion.append(t.value)   
                         t.value=" "
                         return t
-                #print(listaExpresion)
+                print(listaExpresion)
                 listaExpresion.append(t.value)
 
         if flagIf:
@@ -273,11 +274,12 @@ def t_parCerr(t):
        # print(anotherFlag)
        # print(flagExpresion)
         if anotherFlag and flagExpresion:
+                print(funcionAux.nombre)
                 anotherFlag=False
                 if funcionAux.nParam > 1:
-                        #print(funcionAux.nParam-1)
-                        #print(funcionAux.nombre)
-                        #print(tabla_simbolos.buscarnParamFuncion(funcionAux.nombre))
+                        print(funcionAux.nParam-1)
+                        print(funcionAux.nombre)
+                        print(tabla_simbolos.buscarnParamFuncion(funcionAux.nombre))
 
 
                         if funcionAux.nParam-1 != tabla_simbolos.buscarnParamFuncion(funcionAux.nombre):

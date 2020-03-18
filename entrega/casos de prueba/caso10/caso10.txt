@@ -1,0 +1,9 @@
+var string a; 
+a = 2; 
+var string b; 
+b = 3;   
+function int suma (int num1, int num2)  { 
+return num1+num2;
+}
+var int c; 
+c= suma(a,b);

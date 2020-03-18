@@ -1,0 +1,12 @@
+var int z;
+var string a;
+var boolean b;
+function test (int i){
+    for(i=0;i>10; ){
+	    if( (i+5) > 10)
+	    	print("es mayor de 5");
+	    i = i + 1;
+    }
+}
+z=0;
+test(z);

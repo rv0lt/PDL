@@ -1,0 +1,7 @@
+print("Introducir número:");
+var int a;
+var string cad;
+cad = "Enhorabuena! Tu número es mayor que 5!";
+input(a);
+if (a>5)
+	print(cad);
